@@ -1570,9 +1570,10 @@ class MY_Model extends CI_Model
      * public function fields($fields)
      * does a select() of the $fields
      * @param $fields the fields needed
+     * @param boolean $prefix
      * @return $this
      */
-    public function fields($fields = NULL)
+    public function fields($fields = NULL, $prefix = TRUE )
     {
         if(isset($fields))
         {
@@ -1587,14 +1588,17 @@ class MY_Model extends CI_Model
                 $fields = (!is_array($fields)) ? explode(',', $fields) : $fields;
                 if (!empty($fields))
                 {
-                    foreach ($fields as &$field)
-                    {
-                        $exploded = explode('.', $field);
-                        if (sizeof($exploded) < 2)
-                        {
-                            $field = $this->table . '.' . $field;
-                        }
-                    }
+					if($prefix)
+					{
+						foreach ($fields as &$field)
+						{
+							$exploded = explode('.', $field);
+							if (sizeof($exploded) < 2)
+							{
+								$field = $this->table . '.' . $field;
+							}
+						}
+					}
                 }
                 $this->_select = $fields;
             }
